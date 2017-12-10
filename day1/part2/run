@@ -1,0 +1,3 @@
+#!/bin/bash
+mkdir output
+irun -64bit -sv ../define/colors.v ../define/log_macro.v ../lib/stream_source.v main.v -libext .v -y ../lib ../c/read_data.c -top main -input wave.tcl -access +rw
