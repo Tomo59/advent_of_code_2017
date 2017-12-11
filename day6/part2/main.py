@@ -2,7 +2,7 @@
 
 f = open("input.txt", 'r');
 
-bank_status = {};
+bank_status = [];
 result = 0;
 i = 0;
 
@@ -21,10 +21,10 @@ def update_mem():
     mem[index] += 1
     max_value -= 1
 
-while not mem in bank_status.values():
-  bank_status[result] = list(mem)
+while not mem in bank_status:
+  bank_status.append(list(mem))
   update_mem()
   result += 1
 
-print("result is {}\n".format(result));
+print("result is {}\n".format(result - bank_status.index(mem)));
 
