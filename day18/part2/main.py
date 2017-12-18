@@ -15,8 +15,11 @@ result = 0
 
 def execute(ID):
   global result
-  print("PROG {}: instr {} : {} and regs[{}] = {}".format(ID, i[ID], instr[i[ID]], instr[i[ID]][1], regs[ID].get(instr[i[ID]][1], 0)))
-  X = regs[ID].get(instr[i[ID]][1], 0)
+  #print("PROG {}: instr {} : {} and regs[{}] = {}".format(ID, i[ID], instr[i[ID]], instr[i[ID]][1], regs[ID].get(instr[i[ID]][1], 0)))
+  try:
+    X = int(instr[i[ID]][1])
+  except ValueError:
+    X = regs[ID].get(instr[i[ID]][1], 0)
   if len(instr[i[ID]]) > 2:
     try:
       Y = int(instr[i[ID]][2])
@@ -24,7 +27,7 @@ def execute(ID):
       Y = regs[ID].get(instr[i[ID]][2], 0)
   if instr[i[ID]][0] == "snd":
     sent[ID].append(X)
-    print("PROG {}: sent = {}".format(ID, sent[ID]))
+    #print("PROG {}: sent = {}".format(ID, sent[ID]))
     if ID == 1:
       result += 1
   elif instr[i[ID]][0] == "set":
@@ -38,7 +41,7 @@ def execute(ID):
   elif instr[i[ID]][0] == "rcv":
     if len(sent[1^ID]):
       regs[ID][instr[i[ID]][1]] = sent[1^ID].popleft()
-      print("PROG {}: receives {}".format(ID, regs[ID][instr[i[ID]][1]]))
+      #print("PROG {}: receives {}".format(ID, regs[ID][instr[i[ID]][1]]))
     else:
       return 0 # we are waiting for a value
   elif instr[i[ID]][0] == "jgz":
@@ -47,7 +50,7 @@ def execute(ID):
       return 1
   else:
     print("problem with instr[{}][0] = {}".format(i[ID], instr[i[ID]][0]))
-  print("PROG {}: END : regs[{}] = {}".format(ID, instr[i[ID]][1], regs[ID].get(instr[i[ID]][1], 0)))
+  #print("PROG {}: END : regs[{}] = {}".format(ID, instr[i[ID]][1], regs[ID].get(instr[i[ID]][1], 0)))
   i[ID] += 1
   return 1
 
