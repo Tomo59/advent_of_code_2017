@@ -29,7 +29,8 @@ for i in range(100000): # TODO find a better condition for stopping
       while parts[j]['p'] == parts[j+1]['p']:
         print("step {}: removing particule {} ({})".format(i, j+1, parts.pop(j+1)))
       print("step {}: removing particule {} ({})".format(i, j, parts.pop(j)))
-    j += 1
+    else:
+      j += 1
   for p in parts:
     compute(p) 
   if (i % 100) == 0:
