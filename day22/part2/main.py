@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import numpy as np
+
 #from enum import Enum
 #class Dir(Enum):
 #  UP = 0
@@ -24,14 +26,10 @@ def reverse(d):
 
 def state(y, x):
   global infected
-  if y not in infected.keys():
-    infected[y] = dict()
-  if x not in infected[y].keys():
-    infected[y][x] = 0
-  return infected[y][x]
+  return infected[y,x]
 
 def move(y, x, direction):
-  #print("we are at position [{}][{}] and facing {}".format(y, x, direction.name))
+  #print("we are at position [{}][{}] and facing {}".format(y, x, direction))
   global result
   if state(y, x) == 2: #State.INFECTED
     d = right(direction)
@@ -42,7 +40,7 @@ def move(y, x, direction):
   else: # WEAKENED
     d = direction
     result += 1
-  infected[y][x] = (infected[y][x]+1)%4
+  infected[y,x] = (infected[y,x]+1)%4
   if d == 0 : y -= 1
   elif d == 2 : y += 1
   elif d == 1 : x += 1
@@ -52,26 +50,24 @@ def move(y, x, direction):
     quit()
   return y, x, d
 
-infected = dict()
+infected = np.zeros( (2000, 2000) )
+offset = 1000
 f = open("input.txt", 'r');
 for i,line in enumerate(f):
-  infected[i] = dict()
   for j,d in enumerate(list(line)[:-1]):
     if d == '#':
-      infected[i][j] = 2 # State.INFECTED
-    else:
-      infected[i][j] = 0 # State.CLEAN
+      infected[offset+i,offset+j] = 2 # State.INFECTED
 
 #print(infected)
 
 result = 0
-y = (len(infected)-1)//2
-x = (len(infected[0])-1)//2
+y = offset + i//2
+x = offset + j//2
 direction = 0
 
 for i in range(10000000):
   y, x, direction = move(y, x, direction)
-  #if (i%10000) == 0: print("i = {} and for now result is {}".format(i, result))
+  if (i%1000000) == 0: print("i = {} and for now result is {}".format(i, result))
 
 
 print("result is {}".format(result))
